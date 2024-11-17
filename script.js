@@ -1,96 +1,102 @@
-/* VARIABLES */
-//eye and pupil width and heigh variables 
-let eyeWidth = 20;
-let eyeHeight = 30;
-let pupilWidth = 8;
-let pupilHeight = 10;
-//variables setting the colors, so in theory if I wanted to change all the 
-// black at once to another color, I could do it by simply changing this 1 variable 
-let white = 255;
-let black = 0; 
+//Move the catcher with the left and right arrow keys to catch the falling objects. 
 
-//toggle challenge variable : we start by setting it to false
-let toggle = false; 
+/* VARIABLES */
+let catcher, fallingObject;
+let canvasHeight = 400;
+let canvasWidth = 400;
+let score = 0; 
+
+/* PRELOAD LOADS FILES */
+function preload(){
+  
+}
 
 /* SETUP RUNS ONCE */
 function setup() {
-  //sets the screen size
-  createCanvas(400,400); 
-  //sets the background color
-  background(219,209,209); 
+  createCanvas(canvasWidth,canvasHeight);
+  
+  //Create catcher 
+  catcher = new Sprite(200,380,100,20);
+  catcher.color = color(95,158,160);
+  catcher.collider = 'kinematic';
+  
+  //Create falling object
+  fallingObject = new Sprite(100,0,10);
+  fallingObject.color = color(0,128,128);
+  fallingObject.vel.y = 2; 
 }
 
 /* DRAW LOOP REPEATS */
 function draw() {
-  //set the angles to degrees ( not radians ) for elipses and arcs 
-  // set the rectangles to spawn/ create in the center of the canvas 
-  angleMode(DEGREES); 
-  rectMode(CENTER);
-  
-// body, and arms, filled in and on 'first layer' of drawing 
-  fill(black,black,black);
-  ellipse(200, 250, 160, 160); 
-  
-  fill(white,white,white);
-  ellipse(200, 250, 130, 155);  
-//feet
-  fill(255,153,51);
-  ellipse(170, 310, 40, 60);  
-  ellipse(230, 310, 40, 60);  
+  background(224,224,224);
 
-// face : ( "2nd" layer, these are written later bc they should appear "ontop " of body) 
-  fill(black,black,black);
-  ellipse(200, 150, 80, 80);  
-//mouth
-  fill(white,white,white);
-  arc(200,185,37,27,180,0);
-
-//beak 
-  fill(255,153,51);
-  arc(200,178,30,35,0,180);
-
+  // Draw directions to screen
+  // put up the score before any of the values are changed ( so at the start of
+  // this draw loop ) 
+  fill(0);
+  textSize(12);
+  text("Move the \ncatcher with the \nleft and right \narrow keys to \ncatch the falling \nobjects.", canvasWidth-100, 20);
+  text("Score : " + score, 10, 10);
   
-//eyes 
-  //if statement, using toggle mechanic 
-  // if the variable toggle is currently set to true ( so not its original state) 
-  // then, this means that the mouse has been pressed, and thus the penguin (Tux) closes
-  // his eyes 
-  if(toggle == true){
-    //eyes closed, if the mouse is pressed and toggle is equal to true 
-    fill(black,black,black);
-    ellipse(200, 150, 80, 40);
+  
+  //If fallingObject reaches bottom, move back to random position at top
+  if(fallingObject.y >= canvasHeight){
+    fallingObject.y = 0;
+    fallingObject.x = random(0, canvasWidth);
+    fallingObject.vel.y = random(1, 5);
+    //mild challenge part : the score goes down 1 point if the falling object 
+    // reaches the bottom and has to be reset 
+    score = score -1; 
     
-  } else if(toggle == false){ 
-  // else, if toggle is set to false then this means that the mouse has either been pressed
-    // an equal amount of times or 0 times, so Tux keeps his eyes open 
-    fill(white,white,white);
-    ellipse(180, 160, eyeWidth, eyeHeight); 
-    ellipse(220, 160, eyeWidth, eyeHeight); 
-  
-//pupils
-    fill(black,black,black);
-    ellipse(180, 165, pupilWidth, pupilHeight); 
-    ellipse(220, 165, pupilWidth, pupilHeight);
-  }else{
-    //this shouldn't appear ever, but it is always good to cover your bases 
-    text("this is an error, \n this text should not be here", 10, 50); 
   }
-  
-//text instructions here  
-  textSize(15);
-  fill(255,153,51);
-  text("Click on Tux to make him blink! \nClick again to make him open his eyes! ", 10, 20);
-  text("Interactive Avatar project, June 2024", 100, 380);
-}
 
-/* FUNCTIONS */ 
-//this is for the challenge level of the project, this function mousePressed
-// changes the value of toggle once it is used - which bassically lets us 
-// make sure that toggle does not stay the same and gives us the option to 
-// click again to open or close Tux's eyes 
-function mousePressed(){  
-  toggle = !toggle;
-  return toggle;
-  //all it does is set the variable toggle to the opposite of its current value 
-  // true or false, and then returns it as a value of the function 
+  //Kb catcher : i cannot seem to make this work for some reason T^T 
+  if(kb.pressing('left')){
+    catcher.vel.x = - 2;
+    //catcher.vel.x = -(catcher.vel);
+  }else if(kb.pressing('right')){
+    catcher.vel.x = 2;
+    //catcher.vel.x = abs(catcher.vel.x);
+  }else{
+    catcher.vel.x = 0;
+  }
+
+  //Stop catcher at edges of screen
+  if(catcher.x <= 50){
+    catcher.x = 50;
+  }else if(catcher.x >=350){
+    catcher.x = 350;
+  }//else{
+    //text('This is an error, this case is not supposed to happen', 10, 10);
+  //}
+  
+  //If fallingObject collides with catcher, move back to random position at top
+  if(fallingObject.collides(catcher)){
+    fallingObject.y = 0;
+    fallingObject.x = random(0, canvasWidth-1 ); 
+    fallingObject.vel.y = random(1,5);
+    fallingObject.direction = 'down';
+    score = score +1 ; 
+  }
+
+  //score loose or win states : ( meduium and spicy levels ) 
+  //mine did not work for a while so my win states and loose states are a bit 
+  // modified to fit the game that didn't work before 
+  if(score <= -5){
+    text("You loose !", 100, 200);
+    score = 0;
+    //resets the score and the falling object 
+    fallingObject.y = 0;
+    fallingObject.x = random(0, canvasWidth);
+    fallingObject.vel.y = random(1, 5);
+  }else if(score >= 5){
+    //so if the score is bigger than 5, then the player wins in theory 
+    text("You Win! !", 100, 200);
+    //and the game restarts :) 
+    score = 0;
+    fallingObject.y = 0;
+    fallingObject.x = random(0, canvasWidth);
+    fallingObject.vel.y = random(1, 5);
+
+  }
 }
