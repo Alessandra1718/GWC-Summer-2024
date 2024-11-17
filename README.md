@@ -5,7 +5,9 @@ We worked with javascript and the p5play Library. Each project had various diffi
 
 I have uploaded the .js files to github to showcase my projects:
 - Interactie Avatar
-  - This is a simple character that blinks his eyes when you press on the screen. 
+  - This is a simple character that blinks his eyes when you press on the screen.
+- Collection Style Game
+  - This is a simple game where you move the platform at the bottom of the screen left and rigth to try and collect as many falling objects as possible while a counter variable keeps score in the top left corner. 
 - Choose Your Own Adventure Game
 
 
