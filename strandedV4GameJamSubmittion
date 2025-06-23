@@ -1,0 +1,740 @@
+//Press a button to choose your path
+//See the README file for more information
+
+/* VARIABLES */
+//declare buttons here 
+let enterButton;
+let screen = 0;
+let openButton; 
+let contdButton;
+let MIButton; 
+let backButton; 
+let forestButton;
+let beachButton; 
+let firstButton;
+
+// all rest of the buttons 
+let nButton;
+let eButton;
+let sButton;
+let wButton;
+
+let aButton;
+let bButton;
+
+let cButton;
+let dButton;
+
+let islandImg;
+
+function preLoad(){
+  islandImg = loadImage("assets/island-2196602.jpg");
+}
+
+
+/* SETUP RUNS ONCE */
+function setup() {
+  //COOOL IDEA : LETS SEE IF THIS CAN JUST CALL THE RESTART FUNCTION INSTEAD
+  //CLEANS UP THE CODE 
+  createCanvas(1500, 800);
+  
+  textAlign(CENTER);
+  textSize(150);
+  noStroke();
+
+  // Set up the home screen
+  
+  background("lightblue");
+  fill('darkblue');
+  text("STRANDED", 750, 300);
+
+
+  
+  //randSprite = new Sprite();
+  //randSprite.image = 'assets/island-2196602.jpg';
+  
+
+  // Create buttons for all screens
+  enterButton = new Sprite();
+  enterButton.rotation = 0;
+  enterButton.width = 200;
+  enterButton.height = 100;
+  enterButton.collider = 'k';
+  enterButton.color = 'paleblue';
+  enterButton.textSize = 50;
+  enterButton.text = 'Start';
+  //enterButton.image = 'assets/island-2196602.jpg';
+  //enterButton
+
+
+  
+  openButton = new Sprite();
+  openButton.pos.x = -100;
+  openButton.pos.y = -100; 
+
+  contdButton = new Sprite();
+  contdButton.pos.x = -100;
+  contdButton.pos.y = -50; 
+
+
+
+  MIButton = new Sprite();
+  //activate after screen 2 
+  MIButton.pos.x = -300;
+  MIButton.pos.y = -100; 
+
+  backButton = new Sprite();
+  backButton.pos.x = -400;
+  backButton.pos.y = -200;
+
+  
+  //forest and beach buttons 
+  beachButton = new Sprite();
+  beachButton.pos.y = -100;
+  beachButton.pos.x = -300;
+  
+  forestButton = new Sprite();
+  forestButton.pos.x = -200;
+  forestButton.pos.y = -400;
+
+ // brings you back ? idk 
+  firstButton = new Sprite();
+  //EXTRA take it out of the first screen, only appears after screen 1 
+  firstButton.pos.x = -1350;
+  firstButton.pos.y = -50;
+
+//define all the rest of the buttons and make sure they are off the screen to start with 
+  nButton = new Sprite();
+  nButton.pos.x = -200;
+  nButton.pos.y = -100;
+
+  
+  eButton  = new Sprite();
+  eButton.pos.x = -200;
+  eButton.pos.y = -100;
+
+  sButton  = new Sprite();
+  sButton.pos.x = -200;
+  sButton.pos.y = -100;
+
+  wButton  = new Sprite();
+  wButton.pos.x = -200;
+  wButton.pos.y = -100;
+
+
+  aButton  = new Sprite();
+  aButton.pos.x = -200;
+  aButton.pos.y = -100;
+
+  bButton  = new Sprite();
+  bButton.pos.x = -200;
+  bButton.pos.y = -100;
+
+
+  cButton  = new Sprite();
+  cButton.pos.x = -200;
+  cButton.pos.y = -100;
+
+  dButton  = new Sprite();
+  dButton.pos.x = -200;
+  dButton.pos.y = -100;
+//OPTIMIZTION : call resetNESW(); instead of all these extra lines 
+  
+}
+
+
+
+
+/* DRAW LOOP REPEATS */
+function draw() {
+  //so wait are we just gonna have  a bunch of if loops? 
+  //image(loadImage("assets/island-2196602.jpg"), 0, 0);
+  //image(islandImg, 0, 0)
+
+  
+  // Check enter button
+  if(enterButton.mouse.presses()){
+    screen = 1;
+    print('pressed 1');
+    showScreen1();
+  }
+  
+  if(openButton.mouse.presses()){
+    screen = 2;
+    print('pressed 2');
+    showScreen2();
+  }
+  //fgure out a way to go back to the previous screen without writting 
+  //hmmm so its only based on the function so in theory //
+  //ok wait backButton is not in use currently and is nowhere to be seen
+
+  /*
+   if(backButton.mouse.presses()){
+    screen = screen - 1 ;
+    print(screen );
+    showScreen2();
+     //idk how to do this one PLS 
+  }
+
+  */
+
+  //TO DO: GET RID OF BACKBUTTON 
+  /*
+  if(MIButton.mouse.presses()){
+    screen = screen + 1 ;
+    print(screen + '- map time ');
+    // screen 2 is the map :) 
+    showScreen2();
+  }
+  */
+  //general winning mode 
+  if(contdButton.mouse.presses()){
+    screen = 4;
+    print('pressed 4');
+    showScreen4();
+  }
+  if(forestButton.mouse.presses()){
+    screen = 5;
+    print('pressed 5');
+    showScreen5();
+  }
+  if(nButton.mouse.presses()){
+    screen = 7;
+    print('pressed 7');
+    showScreen7();
+  }
+  
+  if(aButton.mouse.presses()){
+    screen = 8;
+    print('pressed 8');
+    showScreen8();
+  }
+  if(dButton.mouse.presses()){
+    screen = 9;
+    print('pressed 9');
+    showScreen9();
+    restartButton();
+
+  }
+
+  
+  // all fail states here : 
+  if(beachButton.mouse.presses()){
+    screen = 6;
+    print('pressed 6');
+    showScreen6();
+    restartButton();
+  }
+  
+    if(firstButton.mouse.presses()){
+    //brings back to og screen and resets everythign ever 
+      restartGame();
+  }
+  
+  if(sButton.mouse.presses()){
+    screen = 10;
+    print('pressed 10');
+    showScreen10();
+    restartButton();
+  }
+  if(wButton.mouse.presses()){
+    screen = 11;
+    print('pressed 11');
+    showScreen11();
+    restartButton();
+  }
+  if(eButton.mouse.presses()){
+    screen = 3;
+    print('pressed 3');
+    showScreen3();
+    restartButton();
+  }
+  if(bButton.mouse.presses()){
+    screen = 12;
+    print('pressed 12');
+    showScreen12();
+    restartButton();
+  }
+  if(cButton.mouse.presses()){
+    screen = 13;
+    print('pressed 13');
+    showScreen13();
+    restartButton();
+  }
+
+
+
+
+}
+
+
+
+
+
+
+/* FUNCTIONS TO DISPLAY SCREENS */
+function showScreen1(){
+    background('paleturquoise');
+
+    textSize(30);
+  
+    text('You awaken to the sound of seagulls flying overhead, searching for a fish in the ocean.\n Wait, the ocean?! \nYou open your eyes fully and sit up, only for your memories to come flooding back. \nA shipwreck, powerfull storm and hopeless emotions form a memory all too familiar.\n You realise you have become stranded on this seemingly deserted island. \n As if answering your prayers in this hopeless time, a clear glass bottle washes up at your feet. \nIt seems to have something inside of it- maybe a paper note or some instructions. ', 750 , 200);
+  
+  //hide all buttons 
+    enterButton.pos.x = -100; 
+    enterButton.pos.y = -100;
+  
+    openButton.rotation = 0;
+
+    openButton.pos.x = 750;
+    openButton.pos.y = 700;
+    openButton.width = 600;
+    openButton.height = 100;
+    openButton.collider = 'k';
+    openButton.color = 'lightblue';
+    openButton.textSize = 60;
+    openButton.text = 'Open the bottle ';
+}
+
+
+
+
+function showScreen2(){
+    background('yellow');
+    textSize(30);
+  
+    //text('SHOW MAP HERE', 400, 500);
+    text('This paper in a bottle is a map, this map shows a little trail \n - around an island that looks allot like the one you have found yourself on. \n There is a path leading into the forest, following up north and walking through a valley and \n finally going down a waterfall area. \n It also has a big red X at that spot, with some sailboat looking motif. \n This fills you with hope! \n You might have a chance at escaping this island! ', 700, 200);
+
+  //hide all buttons 
+    enterButton.pos.x = -100; 
+    enterButton.pos.y = -100;
+  
+    openButton.pos.x = -750;
+    openButton.pos.y = -700;
+
+    contdButton.pos.y = 650;
+    contdButton.pos.x = 1200; 
+    contdButton.width = 300;
+    contdButton.height = 100;
+    contdButton.collider = 'k';
+    contdButton.color = 'lightblue';
+    contdButton.textSize = 40;
+    contdButton.text = 'Continue';
+}
+
+
+/*
+//from here on display the map instrctuions 
+
+function showMapInstructions(){
+    background('paleyellow');
+    textSize(30);
+  
+    text('SHOW MAP HERE ', 400, 500);
+
+    contdButton.pos.y = 100;
+    contdButton.pos.x = 300; 
+    contdButton.width = 300;
+    contdButton.height = 100;
+    contdButton.collider = 'k';
+    contdButton.color = 'lightblue';
+    contdButton.textSize = 60;
+    contdButton.text = 'Continue ';
+}
+*/
+
+
+//screens continrued 
+function showScreen4(){
+    background('lightblue');
+    textSize(30);
+  
+    text('Now that you have decided to follow the map, \n you must decided your first course of action. \nYou can walk across the beach to start your journey or walk into the forest. \nYou must remember what that map said!', 750 , 200);
+    contdButton.pos.y = -100;
+    contdButton.pos.x = -300; 
+
+
+  //add map button here !!! 
+  //thx !! !
+    forestButton.pos.x = 400;
+    forestButton.pos.y = 700;
+    forestButton.rotation = 0;
+    forestButton.width = 600;
+    forestButton.height = 100;
+    forestButton.collider = 'k';
+    forestButton.color = 'lightgreen';
+    forestButton.textSize = 40;
+    forestButton.text = 'Into the Forest';
+  
+    beachButton.rotation = 0;
+    beachButton.pos.x = 1100;
+    beachButton.pos.y = 700;
+    beachButton.width = 600;
+    beachButton.height = 100;
+    beachButton.collider = 'k';
+    beachButton.color = 'pastelblue';
+    beachButton.textSize = 40;
+    beachButton.text = 'Along the beach!';
+
+}
+
+function showScreen5(){
+    background('lightgreen');
+    textSize(30);
+  
+    text('As you further into the undergrowth of the forest, you remember that you must\n follow one of the four cardinal directions.\n You get out your compass and decide which way you must continue.... ', 750 , 200);
+
+    forestButton.pos.x = -200;
+    forestButton.pos.y = -700;
+    beachButton.pos.x = -1200;
+    beachButton.pos.y = -700;
+
+/// DO THE NW E S BUTTONS HERE CARDINAL DIRECTIONS :
+  
+    nButton.rotation = 0;
+    nButton.width = 100;
+    nButton.height = 100;
+    nButton.collider = 'k';
+    nButton.color = 'green';
+    nButton.textSize = 30;
+    nButton.text = 'N ';
+
+    nButton.pos.x = 750;
+    nButton.pos.y = 500;
+  // -------
+    sButton.rotation = 0;
+    sButton.width = 100;
+    sButton.height = 100;
+    sButton.collider = 'k';
+    sButton.color = 'yellow';
+    sButton.textSize = 30;
+    sButton.text = 'S';
+
+    sButton.pos.x = 750;
+    sButton.pos.y = 700;
+// ---------- 
+    eButton.rotation = 0;
+    eButton.width = 100;
+    eButton.height = 100;
+    eButton.collider = 'k';
+    eButton.color = 'lightblue';
+    eButton.textSize = 30;
+    eButton.text = 'S';
+
+    eButton.pos.x = 900;
+    eButton.pos.y = 600;
+//---------
+    wButton.rotation = 0;
+    wButton.width = 100;
+    wButton.height = 100;
+    wButton.collider = 'k';
+    wButton.color = 'plum';
+    wButton.textSize = 30;
+    wButton.text = 'S';
+
+    wButton.pos.x = 600;
+    wButton.pos.y = 600;
+
+}
+
+
+function showScreen6(){
+    background('lightblue');
+    textSize(30);
+  
+    text('You wandered too far along the beach and got lost,\n while you will try to regain your path and continue along the way \n it will take allot  more time. good luck next time ! ', 750 , 200);
+  
+//reset all buttons  
+    forestButton.pos.x = -200;
+    forestButton.pos.y = -700;
+    beachButton.pos.x = -800;
+    beachButton.pos.y = -700;
+
+}
+
+
+function showScreen7(){
+  // NORTH OPTION 
+    background('lightgreen');
+    textSize(30);
+  
+    text('As you start walking north, you being to gain hope to your survival.\n It seems you are headed on the right path. As you keep walking, \nthe sun comes to its peak in the day and you walk out towards an open valley.\n You are faced with the choice of \n walking through the valley or walking along the ridge to the next location', 750 , 200);
+  
+//add a or b buttons 
+    aButton.rotation = 0;
+    aButton.pos.x = 300;
+    aButton.pos.y = 600;
+    aButton.width = 500;
+    aButton.height = 100;
+    aButton.collider = 'k';
+    aButton.color = 'purple';
+    aButton.textSize = 40;
+    aButton.text = 'Walk through the valley ';
+
+    bButton.rotation = 0;
+    bButton.pos.x = 1200;
+    bButton.pos.y = 600;
+    bButton.width = 500;
+    bButton.height = 100;
+    bButton.collider = 'k';
+    bButton.color = 'grey';
+    bButton.textSize = 40;
+    bButton.text = 'walk along the ridge';
+
+
+  //reset all buttons from screen 5 NWE S buttons and delcare two other buttons 
+  resetNESW();
+}
+
+function showScreen8(){
+  // OPTION A 
+    background('grey');
+    textSize(30);
+  
+    text('As you walk into the valley, numerous wildflowers bloom all around you. \nYou hear the faint buzz of a bee around you and the sky clears up, your hopes are \n up as you walk to the end of the valley and admire the stunning view of a sparkling waterfall. \n The droplets of water make a rainbow appear and the sight of it brings you comfort. \n You are close to the end of your journey. ', 750, 200);
+    cButton.rotation = 0;
+    cButton.pos.x = 300;
+    cButton.pos.y = 600;
+    cButton.width = 500;
+    cButton.height = 100;
+    cButton.collider = 'k';
+    cButton.color = 'plum';
+    cButton.textSize = 40;
+    cButton.text = 'Walk up the waterfall';
+
+    dButton.rotation = 0;
+    dButton.pos.x = 1200;
+    dButton.pos.y = 600;
+    dButton.width = 500;
+    dButton.height = 100;
+    dButton.collider = 'k';
+    dButton.color = 'lightblue';
+    dButton.textSize = 40;
+    dButton.text = 'Walk down to the bottom ';
+
+
+  //reset all buttons from screen 7 A and B Buttons  and delcare C and D buttons  
+
+    aButton.pos.x = -1000;
+    aButton.pos.y = -600;
+
+    bButton.pos.x = -1000;
+    bButton.pos.y = -600;
+
+
+}
+
+function showScreen9(){
+  // OPTION D 
+    background('yellow');
+    textSize(30);
+  
+    text('As you walk down the path near the waterfall, \n you see a one masted sail ship along with a treasure chest on deck! \n It seems the map has led you to the right place, and you have found a way off this deserted island! \n Tomorrow you will unfurl the sails of your ship and sail away \n full of hope and excitement for your future! \n You have finished your adventure!', 750 , 200);
+
+
+  //reset all buttons from screen 8 d and c Buttons  and reset 
+    cButton.pos.x = -1000;
+    cButton.pos.y = -600;
+
+    dButton.pos.x = -1000;
+    dButton.pos.y = -600;
+    resetNESW();
+  
+
+
+}
+function showScreen10(){
+  // SOUTH DEAD 
+    background('grey');
+    textSize(30);
+  
+    text('As you being to walk south, the forest only grows thicker \nand thicker until you are walking along a dark path and the sunlight is nowhere to be seen. \n You begin to loose hope in your endeavors for this pathway and decide to restart \n and take another direction', 750 , 200);
+
+
+  //reset all buttons from screen 5 NWES Buttons  .   
+    resetNESW();
+
+}
+
+function showScreen11(){
+  // WEST DEAD 
+    background('yellow');
+    textSize(30);
+  
+    text('As you walk towards the west, or the direction of the setting sun,\n  you notice your shadow get bigger and bigger as the hours pass. \nThe trail seems endless and its monotonous scenery does not bring hope to you. \n Towards the end of the day, you decide to return back and take another path', 750 , 200);
+
+
+  //reset all buttons from screen 5 NWES Buttons  .   
+    resetNESW();
+
+}
+
+function showScreen3(){
+  // EAST DEAD 
+
+    background('lightblue');
+    textSize(30);
+  
+    text('As you begin to walk in the direction of the rising sun, \n you begin to notice a much more rigid and rocky landscape.\n  It seems the breach and its cliffsides are nearing closer and closer until you come to a stop and a dead end. \n You admire the view for a few minutes before deciding to r\n eturn back to your original trail', 750 , 200);
+
+
+  //reset all buttons from screen 5 NWES Buttons     
+    resetNESW();
+
+}
+
+function showScreen12(){
+  // B dead 
+    background('grey');
+    textSize(30);
+  
+    text('You begin to walk around the ledge of the valley but it seems the path only shrinks form there. \n The wind begins to pick up and this pathway begins to seem dangerous and hopeless.\n  You decide to turn back and attempt another trail another day.', 750 , 200);
+
+
+  //reset all buttons from screen 7 A or B  Buttons  .   
+  aButton.pos.x = -200;
+  aButton.pos.y = -100;
+
+  bButton.pos.x = -200;
+  bButton.pos.y = -100;
+
+
+  cButton.pos.x = -200;
+  cButton.pos.y = -100;
+
+  dButton.pos.x = -200;
+  dButton.pos.y = -100;
+
+}function showScreen13(){
+  // C DEAD 
+    background('grey');
+    textSize(30);
+  
+    text('As you walk up towards the start of the waterfall the water gets \n closer and closer to the path.\n You reach the top and look down on a steep and dangerous drop. \n It seems you can just make out the top of a sail or\n mast somewhere near the bottom of this waterfall, \n you decide to turn back and start over to hopefully reach it next time. ', 750 , 200);
+
+
+  //reset all buttons from screen 8 C or D  Buttons  .   
+  aButton.pos.x = -200;
+  aButton.pos.y = -100;
+
+  bButton.pos.x = -200;
+  bButton.pos.y = -100;
+
+
+  cButton.pos.x = -200;
+  cButton.pos.y = -100;
+
+  dButton.pos.x = -200;
+  dButton.pos.y = -100;
+
+}
+
+
+
+
+
+
+function restartButton(){
+  // place the button plsss 
+  firstButton.rotation = 0;
+  firstButton.pos.x = 1350;
+  firstButton.pos.y = 50;
+  firstButton.width = 200;
+  firstButton.height = 100;
+  firstButton.collider = 'k';
+  firstButton.color = 'lightblue';
+  firstButton.textSize = 30;
+  firstButton.text = 'Restart! ';
+  
+}
+
+
+function restartGame(){
+
+  //this function restarts the whole game and counter, brings you back to screen 1 \
+    screen = 0;
+    print('pressed 0 ');
+
+      // Set up the home screen
+    textAlign(CENTER);
+    noStroke();
+
+    background("lightblue");
+    fill('darkblue');
+    textSize(150);
+
+    text("STRANDED", 750, 300);
+  
+  enterButton.pos.x = 750;
+  enterButton.pos.y = 600;
+  
+    enterButton.width = 200;
+  enterButton.rotation = 0;
+  enterButton.height = 100;
+  enterButton.collider = 'k';
+  enterButton.color = 'paleblue';
+  enterButton.textSize = 50;
+  enterButton.text = 'Start';
+
+  openButton.pos.x = -100;
+  openButton.pos.y = -100; 
+
+  contdButton.pos.x = -100;
+  contdButton.pos.y = -50; 
+
+
+  MIButton.pos.x = -300;
+  MIButton.pos.y = -100; 
+
+  backButton.pos.x = -400;
+  backButton.pos.y = -200;
+
+  
+  //forest and beach buttons 
+  
+  forestButton.pos.x = -200;
+  forestButton.pos.y = -400;
+  firstButton.pos.x = -1350;
+  firstButton.pos.y = -50;
+
+  resetNESW();
+
+  aButton.pos.x = -200;
+  aButton.pos.y = -100;
+
+  bButton.pos.x = -200;
+  bButton.pos.y = -100;
+
+
+  cButton.pos.x = -200;
+  cButton.pos.y = -100;
+
+  dButton.pos.x = -200;
+  dButton.pos.y = -100;
+
+  
+}
+
+function resetNESW(){
+  //resets buttons for cardinal directions cause i dont wanna copy paste this four times
+
+    nButton.pos.x = -750;
+    nButton.pos.y = -500;
+  // -------
+
+    sButton.pos.x = -750;
+    sButton.pos.y = -700;
+// ---------- 
+    eButton.pos.x = -900;
+    eButton.pos.y = -600;
+//---------
+
+    wButton.pos.x = -500;
+    wButton.pos.y = -600;
+
+// -- extra ? 
+    beachButton.pos.x = -1200;
+    beachButton.pos.y = -700;
+
+}
