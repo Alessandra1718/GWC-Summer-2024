@@ -1,0 +1,125 @@
+//Use the mouse to move the paddle from left to right. Keep the ball in the air. If it touches the ground, you lose.
+//pong 2.0 
+
+/* VARIABLES */
+let paddle, ball;
+let score = 0;
+
+/* PRELOAD LOADS FILES */
+function preload() {
+}
+
+/* SETUP RUNS ONCE */
+function setup() {
+  createCanvas(600,400);
+  background(230,40,235);
+
+  //Create paddle 
+  paddle = new Sprite(200,380,100,20);
+  paddle.color = color(193,99,193);
+  paddle.rotationLock = true;
+  
+  //Create ball
+  ball = new Sprite(100, 50, 20);
+  ball.color = color(90,55,128);
+  ball.direction = 'down';
+  ball.speed = 4;
+  ball.bounciness = 1;
+  ball.friction = 0;
+
+  //second ball 
+  ball2 = new Sprite(100, 50, 20);
+  ball2.color = color(253,126,129);
+  ball2.direction = 'down';
+  ball2.speed = 4;
+  ball2.bounciness = 1;
+  ball2.friction = 0;
+
+  //Create walls
+  walls = new Group();
+	walls.w = 10;
+	walls.h = 400;
+  walls.collider = "static";
+  walls.visible = false;
+
+  // left and right walls
+	new walls.Sprite(0, height / 2);
+	new walls.Sprite(width, height / 2);
+  
+  //top wall
+	let wallTop = new walls.Sprite(width / 2, 0);
+	wallTop.rotation = 90;
+
+  //restarts the program if the space bar is pressed  
+  if(kb.pressing(" ")){
+    score = 0;
+    ball.y = 390;
+    ball.x = 0;
+    ball2.y = 390;
+    ball2.x = 0;
+  }
+}
+
+/* DRAW LOOP REPEATS */
+function draw() {
+  background(215,128,115);
+
+  //Move the paddle
+  paddle.moveTowards(mouse.x, 380, 1);
+  
+  //When ball collides with paddle bounce off and increase score
+  if (ball.collides(paddle)){
+    score = score + 1;
+    ball.direction = ball.direction + random(-10, 10);
+
+  }
+  if(ball2.collides(paddle)){
+    ball2.direction = ball2.direction + random(-10, 10);
+    score = score + 1;
+  }
+
+  //When ball hits ground you lose
+  if (ball.y > 390) {
+    ball.y = 430
+    ball.speed = 0;
+    
+  if (ball2.y > 390) {
+    ball2.y = 430
+    ball2.speed = 0; 
+  }
+    // Draw you lose to screen
+    //textFont(); 
+    fill(213,199,46);
+    textSize(26);
+    text('You lose!', 160, 160); 
+  }
+
+  //Draw the score
+  fill(213, 199, 46);
+  //textFont()
+  textAlign(LEFT);
+  textSize(15);
+  text('Score = ' + score, 10, 30);
+
+  fill(213, 199, 46);
+  textSize(13);
+  text("Press the space bar to restart", 10, 60);
+  textSize(10);
+  text("Move the paddle with your cursor, don't let the ball drop!", 10, 80);
+  textSize(10);
+  text("Ball speed : "+  ball.speed, 10, 380);
+  text("Ball 2 speed : "+  ball2.speed, 10, 390);
+
+//extra perks: if the score is above ten then the ball starts speeding up
+  // if the score is above 25 then its mega Speed mode, then if above 50 then super mega speed mode 
+if(score >= 10){
+  ball.speed = 8;
+}else if(score >=25){
+  text("Mega Speed Mode", 10, 160);
+  ball.speed = 12 ;
+}else if(score >= 50){
+  text("Super Mega Speed Mode", 10, 160);
+  ball.speed = 20;
+}
+  
+}	
